@@ -18,11 +18,11 @@ class LoggingMiddleware(MiddlewareMixin):
         Adding request and response INFO logging
         """
         http_accept = request.META.get('HTTP_ACCEPT', '')
-        is_html = 'text/html' in http_accept
+        is_allowed_content_type = 'text/html' in http_accept or 'application/json' in http_accept
         status_code = getattr(response, 'status_code', None)
         streaming = getattr(response, 'streaming', False)
 
-        if not streaming and (200 >= status_code <= 400) and is_html:
+        if not streaming and (200 >= status_code <= 400) and is_allowed_content_type:
             request_logger.log(
                 logging.INFO, f'GET: {request.GET}', extra={
                     'request': request,
