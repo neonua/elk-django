@@ -41,7 +41,7 @@ if sys.argv[-1] == 'tag':
     sys.exit()
 
 setup(
-    name='elk-djang',
+    name='elk-django',
     version=version,
     license="MIT",
     description='',
@@ -50,11 +50,11 @@ setup(
     author_email='enkonix',
     url='',
     packages=[
-        'elk-djang'
+        'elk-django'
     ],
     install_requires=['Django>=2.2', 'python-logstash>=0.4.6'],
     include_package_data=True,
-    keywords='elk-djang',
+    keywords='elk-django',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
