@@ -45,7 +45,7 @@ setup(
     version=version,
     license="MIT",
     description='',
-    long_description=open('README.rst').read(),
+    long_description=open('README.md').read(),
     author='enkonix',
     author_email='enkonix',
     url='',
