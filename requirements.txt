@@ -1,0 +1,4 @@
+tox
+twine
+python-logstash==0.4.6
+Django>=2.2
