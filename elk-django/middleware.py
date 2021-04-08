@@ -29,7 +29,6 @@ class LoggingMiddleware(MiddlewareMixin):
                     'request_method': request.method,
                     'request_url': request.build_absolute_uri(),
                     'request_body': self._initial_http_body.decode("utf-8"),
-                    'response_body': response.content,
                     'status_code': response.status_code
                 }
             )
