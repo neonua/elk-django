@@ -20,7 +20,7 @@ class LogstashFormatter(LogstashFormatterVersion1):
         if request := getattr(record, 'request', None):
             message['request_method'] = request.method
             message['request_url'] = str(request.build_absolute_uri())
-            message['request_query'] = str(request.GET)
+            message['request_get_query'] = str(request.GET)
 
             message['user-agent'] = request.META.get('HTTP_USER_AGENT')
             message['domain'] = request.META.get('HTTP_HOST')
