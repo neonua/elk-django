@@ -2,37 +2,13 @@ from logstash.formatter import LogstashFormatterVersion1
 
 
 class LogstashFormatter(LogstashFormatterVersion1):
-    def format(self, record, sent_request=None):
-        caddr = 'unknown'
-        user = None
-        domain = None
-        useragent = None
-        if hasattr(record, 'request'):
-            caddr = record.request.META.get('HTTP_X_FORWARDED_FOR') or record.request.META.get('REMOTE_ADDR')
-            user = record.request.user if hasattr(record.request, 'user') else None
-            domain = record.request.META.get('HTTP_HOST')
-            useragent = record.request.META.get('HTTP_USER_AGENT')
-
-        if user:
-            user_id = record.request.user.id
-            is_anonymus = record.request.user.is_anonymous
-        else:
-            user_id = None
-            is_anonymus = True
-
+    def format(self, record):
         message = {
             '@timestamp': self.format_timestamp(record.created),
             '@version': '1',
             'message': record.getMessage(),
             'host': self.host,
-
-            'client': caddr,
-            'geoip.ip': caddr,
-            'user.username': str(user),
-            'user.id': str(user_id),
-            'user.is_anonymus': str(is_anonymus),
-            'domain': domain,
-            'user-agent': str(useragent),
+            'status_code': record.status_code,
 
             'path': record.pathname,
             'tags': self.tags,
@@ -41,6 +17,21 @@ class LogstashFormatter(LogstashFormatterVersion1):
             'level': record.levelname,
             'logger_name': record.name,
         }
+
+        if request := getattr(record, 'request', None):
+            message['request_method'] = request.method
+            message['request_url'] = request.build_absolute_uri()
+            message['request_query'] = request.GET
+
+            message['user-agent'] = request.META.get('HTTP_USER_AGENT')
+            message['domain'] = request.META.get('HTTP_HOST')
+            message['geoip.ip'] = request.META.get('HTTP_X_FORWARDED_FOR') or request.META.get('REMOTE_ADDR')
+
+            if user := getattr(request, 'user', None):
+                message['user.username'] = str(user)
+                message['user.id'] = getattr(user, 'id', None)
+                message['user.email'] = getattr(user, 'email', None)
+                message['user.is_anonymus'] = getattr(user, 'is_anonymous', None)
 
         message.update(self.get_extra_fields(record))
 

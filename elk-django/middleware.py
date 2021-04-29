@@ -26,13 +26,5 @@ class LoggingMiddleware(MiddlewareMixin):
         is_allowed_content_type = 'multipart' not in content_type
 
         if not streaming and (200 >= status_code <= 400) and is_allowed_http_accept and is_allowed_content_type:
-            request_logger.log(
-                logging.INFO, f'GET: {request.GET}', extra={
-                    'request': request,
-                    'request_method': request.method,
-                    'request_url': request.build_absolute_uri(),
-                    'request_body': self._initial_http_body,
-                    'status_code': response.status_code
-                }
-            )
+            request_logger.log(logging.INFO, f'GET: {request.GET}')
         return response
