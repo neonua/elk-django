@@ -8,20 +8,19 @@ class LogstashFormatter(LogstashFormatterVersion1):
             '@version': '1',
             'message': record.getMessage(),
             'host': self.host,
-            'status_code': record.status_code,
+            'status_code': getattr(record, 'status_code', None),
 
             'path': record.pathname,
             'tags': self.tags,
             'type': self.message_type,
-
             'level': record.levelname,
             'logger_name': record.name,
         }
 
         if request := getattr(record, 'request', None):
             message['request_method'] = request.method
-            message['request_url'] = request.build_absolute_uri()
-            message['request_query'] = request.GET
+            message['request_url'] = str(request.build_absolute_uri())
+            message['request_query'] = str(request.GET)
 
             message['user-agent'] = request.META.get('HTTP_USER_AGENT')
             message['domain'] = request.META.get('HTTP_HOST')
