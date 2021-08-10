@@ -7,12 +7,6 @@ request_logger = logging.getLogger('django.request')
 
 
 class LoggingMiddleware(MiddlewareMixin):
-
-    _initial_http_body = None
-
-    def process_request(self, request):
-        self._initial_http_body = request.body
-
     def process_response(self, request, response):
         """
         Adding request and response INFO logging
