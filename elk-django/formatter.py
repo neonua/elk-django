@@ -23,11 +23,9 @@ class LogstashFormatter(LogstashFormatterVersion1):
             message['request_method'] = request.method
             message['request_url'] = str(request.build_absolute_uri())
             try:
-                message['request_body'] = json.loads(request.body) if request.body else ''
+                message['request_body'] = json.loads(request.body)
             except:
-                message['request_body'] = ''
-
-            message['request_body'] = str(request.body)
+                message['request_body'] = str(request.body)
             message['request_get_query'] = str(request.GET)
 
             message['user-agent'] = request.META.get('HTTP_USER_AGENT')
@@ -38,7 +36,7 @@ class LogstashFormatter(LogstashFormatterVersion1):
                 message['user.username'] = str(user)
                 message['user.id'] = getattr(user, 'id', None)
                 message['user.email'] = getattr(user, 'email', None)
-                message['user.is_anonymus'] = getattr(user, 'is_anonymous', None)
+                message['user.is_anonymous'] = getattr(user, 'is_anonymous', None)
 
         message.update(self.get_extra_fields(record))
 
