@@ -19,7 +19,7 @@ class LoggingMiddleware(MiddlewareMixin):
         is_allowed_http_accept = 'text/html' in http_accept or 'application/json' in http_accept
         is_allowed_content_type = 'multipart' not in content_type
 
-        if not streaming and (200 >= status_code <= 400) and is_allowed_http_accept and is_allowed_content_type:
+        if not streaming and (200 <= status_code <= 400) and is_allowed_http_accept and is_allowed_content_type:
             request_logger.log(
                 logging.INFO, f'{request.method}: {request.build_absolute_uri()}', extra={
                     'request': request,
