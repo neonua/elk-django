@@ -71,8 +71,11 @@ setup(
         'Framework :: Django',
         'Framework :: Django :: 2.2',
         'Framework :: Django :: 3.0',
+	'Framework :: Django :: 3.1',
+	'Framework :: Django :: 3.2',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     zip_safe=False,
     tests_require=['Django>=2.2', 'python-logstash>=0.4.6'],
 )
+
