@@ -23,9 +23,9 @@ class LogstashFormatter(LogstashFormatterVersion1):
             message['request_method'] = request.method
             message['request_url'] = str(request.build_absolute_uri())
             try:
-                message['request_body'] = json.loads(request.body)
+                message['request_body'] = json.loads(request.body) if request.body else ''
             except:
-                message['request_body'] = str(request.body)
+                message['request_body'] = ''
             message['request_get_query'] = str(request.GET)
 
             message['user-agent'] = request.META.get('HTTP_USER_AGENT')
